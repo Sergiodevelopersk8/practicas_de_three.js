@@ -47,7 +47,7 @@ material = new THREE.MeshNormalMaterial({
 malla = new THREE.Mesh(geometria,material);
 //agregamos la malla a la escena
 escena.add(malla);
-//creanos el renderizado
+//creamos el renderizado
 //esto se dedica a borrar y pintar el canvas o el lienzo 3d
 
 renderizado = new THREE.WebGLRenderer();
