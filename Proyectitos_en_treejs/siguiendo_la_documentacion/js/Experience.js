@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export default class Experience{
 
@@ -104,7 +105,8 @@ export default class Experience{
     this.createDonus();
     this.TextureMapping();    
     this.TheRaycast();
-
+    this.loadModel(); 
+    this.createGroup();   
      } //fin de la funcion de Objects
 
 
@@ -119,11 +121,32 @@ export default class Experience{
         const pointLight = new THREE.PointLight(0xffffff, 50); 
 
         pointLight.position.set(2,3,4);
-
+        // Ayudante para la luz de punto (muestra una esfera donde está la luz)
+        const lightHelper = new THREE.PointLightHelper(pointLight, 0.5);
+        this.scene.add(lightHelper);
         this.scene.add(pointLight);
 
 
      }
+
+
+     createGroup(){
+        //crear el contenedor invisible
+        this.group = new THREE.Group();
+
+        // 2. Metemos nuestros objetos existentes al grupo en lugar de a la escena
+        this.group.add(this.cube);
+        this.group.add(this.donut);
+
+        // 3. Añadimos el grupo a la escena
+        this.scene.add(this.group);
+
+
+
+     }
+
+
+
 
      TextureMapping(){
 
@@ -185,7 +208,24 @@ export default class Experience{
 
       } // fin de la funcion de animate 
 
+      loadModel() {
 
+    const loader = new GLTFLoader();
+
+    // Usaremos un modelo de ejemplo de la documentación
+    loader.load(
+        'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf',
+        (gltf) => {
+            // Cuando el modelo carga, lo añadimos a la escena
+            this.helmet = gltf.scene;
+            this.helmet.scale.set(1, 1, 1);
+            this.helmet.position.y = 1;
+            this.helmet.position.x = -2;
+            this.scene.add(this.helmet);
+            console.log("Modelo cargado con éxito");
+        }
+    );
+}
 
 
 
